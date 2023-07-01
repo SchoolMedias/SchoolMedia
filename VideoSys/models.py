@@ -15,7 +15,7 @@ class videoClass(models.Model):
 
 class videoTable(models.Model):
     vid_ID = models.AutoField(primary_key=True, verbose_name="视频号")
-    vid_Name = models.CharField(null=False, verbose_name="视频名称")
+    vid_Name = models.CharField(max_length=255, null=False, verbose_name="视频名称")
     vid_Time = models.CharField(max_length=255, verbose_name="视频投稿时间")  # 时间在函数中处理成字符串传入
     vid_PlayNum = models.IntegerField(default=0, verbose_name="视频播放量")
     vid_Class = models.ForeignKey(videoClass, on_delete=models.CASCADE, verbose_name="视频分区")  # 外键约束视频分区
