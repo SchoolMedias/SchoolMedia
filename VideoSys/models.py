@@ -123,6 +123,6 @@ class videoCommentPush(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=["User", "video", "commet"], name="评论唯一性约束")
+            models.UniqueConstraint(fields=["User", "video", "comment"], name="评论唯一性约束")
         ]
         db_table = "视频评论发送表"
