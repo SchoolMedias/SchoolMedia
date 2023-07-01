@@ -1,6 +1,6 @@
 from django.db import models
-
-
+from django.core import validators
+from UserSys import models as Umodels
 # Create your models here.
 class videoClass(models.Model):
     class_ID = models.AutoField(primary_key=True, verbose_name="分区号")
@@ -15,7 +15,7 @@ class videoClass(models.Model):
 
 class videoTable(models.Model):
     vid_ID = models.AutoField(primary_key=True, verbose_name="视频号")
-    vid_Name = models.CharField(null=False, verbose_name="视频名称")
+    vid_Name = models.CharField(max_length=255,null=False, verbose_name="视频名称")
     vid_Time = models.CharField(max_length=255, verbose_name="视频投稿时间")  # 时间在函数中处理成字符串传入
     vid_PlayNum = models.IntegerField(default=0, verbose_name="视频播放量")
     vid_Class = models.ForeignKey(videoClass, on_delete=models.CASCADE, verbose_name="视频分区")  # 外键约束视频分区
@@ -26,12 +26,12 @@ class videoTable(models.Model):
         return self.vid_Name
 
     class Meta:
-        db_Table = "视频表"
+        db_table = "视频表"
 
 
 class videoContribute(models.Model):
-    User = models.CharField(verbose_name="用户")  # 此处需要外键约束于用户表
-    video = models.ForeignKey(videoTable, verbose_name="视频")
+    User = models.ForeignKey(Umodels.User, related_name='contribute', on_delete=models.CASCADE, verbose_name='用户')
+    video = models.ForeignKey(videoTable, on_delete=models.CASCADE, verbose_name="视频")
 
     def __str__(self):
         return self.User + "投稿了" + self.video
@@ -46,7 +46,7 @@ class videoContribute(models.Model):
 class videoCompilations(models.Model):
     comp_ID = models.AutoField(primary_key=True, verbose_name="视频合集号")
     comp_Name = models.CharField(max_length=255, verbose_name="视频合集名称")
-    video = models.ForeignKey(videoTable, verbose_name="视频")
+    video = models.ForeignKey(videoTable, on_delete=models.CASCADE, verbose_name="视频")
 
     def __str__(self):
         return self.vidcomp_Name
@@ -68,16 +68,16 @@ class videoBulletComment(models.Model):
 
 
 class videoBulletCommentPush(models.Model):
-    User = models.CharField(verbose_name="用户")  # 此处需要外键约束于用户表
-    video = models.ForeignKey(videoTable, verbose_name="视频")
-    bulletcomment = models.ForeignKey(videoBulletComment, verbose_name="弹幕")
+    User = models.ForeignKey(Umodels.User, related_name='bullet', on_delete=models.CASCADE, verbose_name='用户')
+    video = models.ForeignKey(videoTable, on_delete=models.CASCADE, verbose_name="视频")
+    bulletcomment = models.ForeignKey(videoBulletComment, on_delete=models.CASCADE, verbose_name="弹幕")
 
     def __str__(self):
         return self.User + "在" + self.video + "发送了" + self.bulletcomment
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=["User", "video", "bulletcommet"], name="弹幕唯一性约束")
+            models.UniqueConstraint(fields=["User", "video", "bulletcomment"], name="弹幕唯一性约束")
         ]
         db_table = "视频弹幕发送表"
 
@@ -87,9 +87,9 @@ class videoLikeFavorite(models.Model):
     type_choices = (("like", "点赞"), ("favorite", "收藏"))
 
     LF_id = models.AutoField(primary_key=True, verbose_name="视频点赞收藏编号")
-    User = models.CharField(verbose_name="用户")  # 此处需要外键约束于用户表
+    User = models.ForeignKey(Umodels.User, related_name='like', on_delete=models.CASCADE, verbose_name='用户')
     Type = models.CharField(choices=type_choices, max_length=255, verbose_name="视频点赞收藏类型")
-    video = models.ForeignKey(videoTable, verbose_name="视频")
+    video = models.ForeignKey(videoTable, on_delete=models.CASCADE, verbose_name="视频")
 
     def __str__(self):
         return self.User + self.type_choices + self.video
@@ -114,15 +114,15 @@ class videoComment(models.Model):
 
 
 class videoCommentPush(models.Model):
-    User = models.CharField(verbose_name="用户")  # 此处需要外键约束于用户表
-    video = models.ForeignKey(videoTable, verbose_name="视频")
-    comment = models.ForeignKey(videoComment, verbose_name="评论")
+    User = models.ForeignKey(Umodels.User, related_name='comment', on_delete=models.CASCADE, verbose_name='用户')
+    video = models.ForeignKey(videoTable, on_delete=models.CASCADE, verbose_name="视频")
+    comment = models.ForeignKey(videoComment, on_delete=models.CASCADE, verbose_name="评论")
 
     def __str__(self):
         return self.User + "在" + self.video + "评论了" + self.comment
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=["User", "video", "commet"], name="评论唯一性约束")
+            models.UniqueConstraint(fields=["User", "video", "comment"], name="评论唯一性约束")
         ]
         db_table = "视频评论发送表"
