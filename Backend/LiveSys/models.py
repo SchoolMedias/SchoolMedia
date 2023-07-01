@@ -3,8 +3,8 @@ from django.db import models
 # Create your models here.
 class Liveroom(models.Model):
     roomID = models.AutoField(verbose_name="roomID")
-    roomName = models.CharField(verbose_name="roomName")
-    roomInfo = models.CharField(verbose_name="roomInfo")
+    roomName = models.CharField(max_length=100,verbose_name="roomName")
+    roomInfo = models.CharField(max_length=2048,verbose_name="roomInfo")
     Owner = models.ForeignKey(on_delete=models.CASCADE,verbose_name="Owner")
 
     class Meta:
