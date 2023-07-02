@@ -69,7 +69,7 @@ ROOT_URLCONF = "SchoolMedia.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, 'Fronted\\front\\dist')],
+        "DIRS": [os.path.join(BASE_DIR, 'frontend\\dist')],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -171,7 +171,7 @@ STATIC_URL = "static/"
 
 
 STATICFILES_DIRS = [
- os.path.join(BASE_DIR, "Fronted\\front\\dist\\static"), #这个是我们收集静态文件的路径
+ os.path.join(BASE_DIR, "frontend\\dist\\static"), #这个是我们收集静态文件的路径
 ]
 
 
