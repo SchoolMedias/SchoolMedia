@@ -5,6 +5,7 @@ class Liveroom(models.Model):
     roomID = models.AutoField(primary_key=True,verbose_name="roomID")
     roomName = models.CharField(max_length=100,verbose_name="roomName")
     roomInfo = models.CharField(max_length=2048,verbose_name="roomInfo")
+    roomcover = models.ImageField(upload_to="./livecover/",verbose_name="roomcover")
     Owner = models.ForeignKey(Umodels.User, on_delete=models.CASCADE, verbose_name="Owner")
 
     class Meta:
