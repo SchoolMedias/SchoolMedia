@@ -6,6 +6,7 @@ import video from '@/components/video'
 import live from '@/components/live'
 import meeting from '@/components/meeting'
 import user from '@/components/user'
+import register from '@/components/register'
 Vue.use(Router)
 Vue.config.debug = true;
 export default new Router({
@@ -39,6 +40,11 @@ export default new Router({
       path: '/live',
       name: 'live',
       component: live
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: register
     }
   ]
 })

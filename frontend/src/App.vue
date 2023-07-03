@@ -7,6 +7,7 @@
     <router-link to="/user">用户</router-link>
     <router-link to="/123">home</router-link>
     <router-link to="/321">hello</router-link>
+    <router-link to="/register">register</router-link>
     <router-view/>
   </div>
 </template>
