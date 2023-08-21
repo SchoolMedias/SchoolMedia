@@ -31,7 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'simpleui',
+    'daphne', #pip install channels daphne channels_redis
+    'simpleui',     #pip install django-simpleui 美化django自带的后台管理
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -39,13 +40,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
-
+    
     'corsheaders', # pip install django-cors-headers 这个是为了防止跨域，具体请另查资料，我这里就不赘述了。
     'rest_framework', # pip install djangorestframework 方便我们写后端接口
 
-
     "LiveSys",
-    "MeetingSys",
     "UserSys",
     "VideoSys",
 ]
@@ -60,8 +59,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 
-
-
 ]
 
 ROOT_URLCONF = "SchoolMedia.urls"
@@ -69,7 +66,7 @@ ROOT_URLCONF = "SchoolMedia.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, 'frontend\\dist')],
+        "DIRS": [os.path.join(BASE_DIR, 'Frontend\\dist')],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -83,9 +80,15 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "SchoolMedia.wsgi.application"
-
-
-
+ASGI_APPLICATION = "SchoolMedia.asgi.application"
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
 
 # 支持跨域配置开始
 CORS_ALLOW_CREDENTIALS = True
@@ -171,7 +174,7 @@ STATIC_URL = "static/"
 
 
 STATICFILES_DIRS = [
- os.path.join(BASE_DIR, "frontend\\dist\\static"), #这个是我们收集静态文件的路径
+ os.path.join(BASE_DIR, "Frontend\\dist\\static"), #这个是我们收集静态文件的路径
 ]
 
 
