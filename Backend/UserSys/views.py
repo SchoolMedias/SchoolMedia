@@ -3,11 +3,11 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from .models import User
-
+from .auth import islogin
 
 @api_view(["POST"])
 def login(request):
-    if request.method == 'POST':
+    if request.method == 'POST':  
         request_json = request.data
         email = request_json.get("Email")
         password = request_json.get("Password")
